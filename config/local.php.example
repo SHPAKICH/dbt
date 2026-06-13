@@ -1,0 +1,12 @@
+<?php
+
+return [
+    'db' => [
+        'dsn' => 'mysql:host=localhost;dbname=dbt_system',
+        'username' => 'db_user',
+        'password' => 'replace_me',
+    ],
+    'app' => [
+        'cookieValidationKey' => 'replace_with_a_long_random_string',
+    ],
+];

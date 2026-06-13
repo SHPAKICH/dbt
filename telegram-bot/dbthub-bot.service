@@ -1,0 +1,16 @@
+[Unit]
+Description=DBT Hub feedback bot
+After=network-online.target xray.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/var/www/dbt/telegram-bot
+EnvironmentFile=-/var/www/dbt/telegram-bot/.env
+ExecStart=/var/www/dbt/telegram-bot/venv/bin/python /var/www/dbt/telegram-bot/bot.py
+Restart=always
+RestartSec=10
+Environment=PYTHONUNBUFFERED=1
+
+[Install]
+WantedBy=multi-user.target

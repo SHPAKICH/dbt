@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DBT Hub — Презентация</title>
+  <style>
+    :root {
+      --bg: #000;
+      --slide-bg: #fbfbfd;
+      --text: #1d1d1f;
+      --muted: #86868b;
+      --blue: #0071e3;
+      --blue-glow: rgba(0, 113, 227, 0.15);
+      --line: rgba(0, 0, 0, 0.06);
+      --w: 1280px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .deck {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px 16px 76px;
+    }
+
+    .slide {
+      display: none;
+      width: min(100%, var(--w));
+      aspect-ratio: 16 / 9;
+      max-height: calc(100vh - 100px);
+      background: var(--slide-bg);
+      border-radius: 16px;
+      padding: 52px 60px 44px;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .slide.active { display: flex; }
+
+    /* ——— Dark slides ——— */
+    .slide.dark {
+      background: #000;
+      color: #f5f5f7;
+    }
+
+    .slide.dark .muted { color: #a1a1a6; }
+    .slide.dark .line { background: rgba(255,255,255,0.08); }
+    .slide.dark .box { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.1); }
+    .slide.dark .box p { color: #a1a1a6; }
+    .slide.dark .point li { color: #d2d2d7; }
+    .slide.dark .big-num { color: #fff; }
+    .slide.dark .accent { color: #2997ff; }
+
+    /* ——— Gradient accent slides ——— */
+    .slide.hero {
+      background: linear-gradient(160deg, #000 0%, #1a1a2e 40%, #0a1628 100%);
+      color: #fff;
+      justify-content: center;
+    }
+
+    .slide.hero .glow {
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,113,227,0.35) 0%, transparent 70%);
+      top: -200px;
+      right: -100px;
+      pointer-events: none;
+    }
+
+    /* ——— Type ——— */
+    .eyebrow {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 10px;
+    }
+
+    .slide.dark .eyebrow,
+    .slide.hero .eyebrow { color: #2997ff; }
+
+    h1 {
+      font-size: clamp(44px, 5vw, 72px);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 1.02;
+    }
+
+    h2 {
+      font-size: clamp(32px, 3.5vw, 48px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.08;
+      margin-bottom: 6px;
+    }
+
+    .lead {
+      font-size: clamp(17px, 1.8vw, 22px);
+      color: var(--muted);
+      line-height: 1.45;
+      max-width: 780px;
+      font-weight: 400;
+    }
+
+    .slide.hero .lead,
+    .slide.dark .lead { color: #a1a1a6; }
+
+    .body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .foot {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: auto;
+      padding-top: 12px;
+    }
+
+    /* ——— Talking points (для рассказа) ——— */
+    .talk {
+      list-style: none;
+      margin-top: 20px;
+    }
+
+    .talk li {
+      font-size: clamp(15px, 1.5vw, 19px);
+      line-height: 1.45;
+      padding: 10px 0 10px 28px;
+      position: relative;
+      border-bottom: 1px solid var(--line);
+      color: var(--text);
+    }
+
+    .slide.dark .talk li,
+    .slide.hero .talk li { border-color: rgba(255,255,255,0.08); color: #f5f5f7; }
+
+    .talk li:last-child { border-bottom: none; }
+
+    .talk li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 18px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--blue);
+    }
+
+    .talk li em {
+      font-style: normal;
+      color: var(--blue);
+      font-weight: 600;
+    }
+
+    .slide.dark .talk li em,
+    .slide.hero .talk li em { color: #2997ff; }
+
+    /* ——— Big stats ——— */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin: 28px 0;
+    }
+
+    .stat {
+      text-align: center;
+      padding: 24px 16px;
+      border-radius: 16px;
+      background: #fff;
+      border: 1px solid var(--line);
+    }
+
+    .slide.dark .stat { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); }
+
+    .big-num {
+      font-size: clamp(40px, 4.5vw, 56px);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      color: var(--text);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 8px;
+      line-height: 1.35;
+    }
+
+    /* ——— Boxes grid ——— */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 20px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 18px; }
+
+    .box {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 18px 20px;
+    }
+
+    .box h3 {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      letter-spacing: -0.01em;
+    }
+
+    .box p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .box .ico { font-size: 24px; margin-bottom: 8px; display: block; }
+
+    /* ——— Flow diagram ——— */
+    .flow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin: 24px 0;
+      flex-wrap: wrap;
+    }
+
+    .flow-node {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 14px 20px;
+      text-align: center;
+      min-width: 130px;
+    }
+
+    .slide.dark .flow-node {
+      background: rgba(255,255,255,0.06);
+      border-color: rgba(255,255,255,0.12);
+    }
+
+    .flow-node strong { display: block; font-size: 14px; margin-bottom: 3px; }
+    .flow-node span { font-size: 11px; color: var(--muted); }
+    .slide.dark .flow-node span { color: #86868b; }
+
+    .flow-arrow {
+      font-size: 22px;
+      color: var(--blue);
+      font-weight: 300;
+    }
+
+    .slide.dark .flow-arrow { color: #2997ff; }
+
+    /* ——— Journey timeline ——— */
+    .journey {
+      display: flex;
+      gap: 0;
+      margin-top: 24px;
+      position: relative;
+    }
+
+    .journey::before {
+      content: "";
+      position: absolute;
+      top: 20px;
+      left: 40px;
+      right: 40px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--blue), #5856d6, #af52de);
+      opacity: 0.4;
+    }
+
+    .step {
+      flex: 1;
+      text-align: center;
+      padding: 0 8px;
+      position: relative;
+    }
+
+    .step-dot {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--blue);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 12px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .step h4 { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+    .step p { font-size: 11px; color: var(--muted); line-height: 1.35; }
+    .slide.dark .step p { color: #86868b; }
+
+    /* ——— Pills ——— */
+    .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+
+    .pill {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 7px 14px;
+      border-radius: 100px;
+      background: var(--blue-glow);
+      color: var(--blue);
+    }
+
+    .slide.dark .pill {
+      background: rgba(41, 151, 255, 0.15);
+      color: #2997ff;
+    }
+
+    /* ——— Two column narrative ——— */
+    .cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      margin-top: 16px;
+      align-items: start;
+    }
+
+    .col-title {
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .point { list-style: none; }
+
+    .point li {
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--muted);
+      padding: 7px 0 7px 16px;
+      position: relative;
+    }
+
+    .point li::before {
+      content: "—";
+      position: absolute;
+      left: 0;
+      color: var(--blue);
+    }
+
+    /* ——— Quote / hook ——— */
+    .hook {
+      font-size: clamp(22px, 2.5vw, 32px);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+      margin-top: 20px;
+      max-width: 900px;
+    }
+
+    .hook span { color: var(--blue); }
+    .slide.dark .hook span,
+    .slide.hero .hook span { color: #2997ff; }
+
+    /* ——— Role chips ——— */
+    .roles-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 16px 0;
+    }
+
+    .role {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 8px 14px;
+      border-radius: 10px;
+      background: #fff;
+      border: 1px solid var(--line);
+    }
+
+    .slide.dark .role {
+      background: rgba(255,255,255,0.06);
+      border-color: rgba(255,255,255,0.12);
+      color: #f5f5f7;
+    }
+
+    .role.admin { border-color: var(--blue); color: var(--blue); }
+    .slide.dark .role.admin { border-color: #2997ff; color: #2997ff; }
+
+    /* ——— Nav ——— */
+    .nav {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(16px);
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      z-index: 100;
+    }
+
+    .nav button {
+      background: rgba(255,255,255,0.1);
+      border: none;
+      border-radius: 8px;
+      width: 40px; height: 40px;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .nav button:hover { background: rgba(255,255,255,0.2); }
+
+    .dots { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; max-width: 50%; }
+    .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.25); cursor: pointer; transition: 0.2s; }
+    .dot.active { background: #2997ff; width: 20px; border-radius: 3px; }
+    .cnt { font-size: 12px; color: rgba(255,255,255,0.5); min-width: 40px; text-align: center; }
+
+    .hint {
+      position: fixed;
+      top: 12px; right: 14px;
+      font-size: 10px;
+      color: rgba(255,255,255,0.45);
+    }
+
+    @media print {
+      body { background: #fff; }
+      .nav, .hint { display: none !important; }
+      .deck { padding: 0; }
+      .slide {
+        display: flex !important;
+        page-break-after: always;
+        border-radius: 0;
+        max-height: none;
+        width: 100%;
+        height: 100vh;
+      }
+    }
+
+    @page { size: landscape; margin: 0; }
+  </style>
+</head>
+<body>
+
+  <p class="hint">← → · пробел · Ctrl+P</p>
+
+  <div class="deck">
+
+    <!-- 1 -->
+    <section class="slide hero active">
+      <div class="glow"></div>
+      <p class="eyebrow">Дипломный проект · 09.02.07 · ИР-22-4</p>
+      <h1>DBT Hub</h1>
+      <p class="lead" style="margin-top:16px;">Корпоративный портал, который собрал всё<br>для сотрудника сети точек в одном месте.</p>
+      <p class="hook" style="margin-top:32px;">Один вход. <span>Один интерфейс.</span> Вся работа.</p>
+      <p class="foot" style="color:#555;">Чуешков Никита Александрович · dbthub.ru</p>
+    </section>
+
+    <!-- 2 -->
+    <section class="slide">
+      <p class="eyebrow">Проблема</p>
+      <h2>Как было до портала</h2>
+      <div class="body">
+        <ul class="talk">
+          <li>График смен — в таблицах и чатах, каждый смотрит своё</li>
+          <li>Ежедневные отчёты и поставки — отдельно, без единого стандарта</li>
+          <li>Обучение новых сотрудников — разрозненные материалы</li>
+          <li>Управляющий не видит картину по <em>всей территории</em> из одного окна</li>
+        </ul>
+        <p class="hook" style="font-size:20px;margin-top:16px;">Нужна была <span>единая точка входа</span> — не ещё один сервис, а центр операций.</p>
+      </div>
+    </section>
+
+    <!-- 3 -->
+    <section class="slide dark">
+      <p class="eyebrow">Решение</p>
+      <h2>Что такое DBT Hub</h2>
+      <div class="body">
+        <p class="lead">SPA-приложение — личный кабинет для каждого сотрудника сети. Всё, что нужно до, во время и после смены.</p>
+        <div class="stats">
+          <div class="stat"><div class="big-num">10+</div><div class="stat-label">функциональных<br>модулей</div></div>
+          <div class="stat"><div class="big-num">6</div><div class="stat-label">ролей с разным<br>уровнем доступа</div></div>
+          <div class="stat"><div class="big-num">1</div><div class="stat-label">URL —<br>dbthub.ru</div></div>
+        </div>
+        <p class="lead">График, зарплата, обучение, новости, чат с бухгалтерией — без переключения между приложениями.</p>
+      </div>
+    </section>
+
+    <!-- 4 — user journey for storytelling -->
+    <section class="slide">
+      <p class="eyebrow">Сценарий</p>
+      <h2>День сотрудника в системе</h2>
+      <div class="body">
+        <div class="journey">
+          <div class="step">
+            <div class="step-dot">1</div>
+            <h4>Утро</h4>
+            <p>Смотрит график смен, принимает приглашение на усиление</p>
+          </div>
+          <div class="step">
+            <div class="step-dot">2</div>
+            <h4>Смена</h4>
+            <p>Заполняет Дейли, загружает фотоотчёт техобслуживания</p>
+          </div>
+          <div class="step">
+            <div class="step-dot">3</div>
+            <h4>Обучение</h4>
+            <p>Проходит тест в DBT.INFO, смотрит урок</p>
+          </div>
+          <div class="step">
+            <div class="step-dot">4</div>
+            <h4>Связь</h4>
+            <p>Читает новость, пишет в чат бухгалтерии</p>
+          </div>
+          <div class="step">
+            <div class="step-dot">5</div>
+            <h4>Итог</h4>
+            <p>Смотрит зарплату и КРО за период</p>
+          </div>
+        </div>
+        <p class="hook" style="font-size:18px;margin-top:20px;text-align:center;">Весь цикл — <span>в одном браузере</span>, с телефона или компьютера.</p>
+      </div>
+    </section>
+
+    <!-- 5 -->
+    <section class="slide">
+      <p class="eyebrow">Пользователи</p>
+      <h2>Кто и что видит</h2>
+      <div class="body">
+        <div class="roles-row">
+          <span class="role admin">admin</span>
+          <span class="role">manager</span>
+          <span class="role">location_manager</span>
+          <span class="role">senior_teamaker</span>
+          <span class="role">teamaker</span>
+          <span class="role">trainee</span>
+        </div>
+        <div class="cols">
+          <div>
+            <p class="col-title">Тимейкер / стажёр</p>
+            <ul class="point">
+              <li>Свой график и карта возможностей</li>
+              <li>Обучение, новости, профиль</li>
+              <li>Зарплата, чат, техобслуживание</li>
+            </ul>
+          </div>
+          <div>
+            <p class="col-title">Управляющий / админ</p>
+            <ul class="point">
+              <li>Все точки территории одним взглядом</li>
+              <li>Пользователи, аналитика, push-рассылки</li>
+              <li>Поставки, Дейли, настройка КРО</li>
+            </ul>
+          </div>
+        </div>
+        <p class="lead" style="margin-top:16px;font-size:15px;">Меню и API автоматически ограничиваются — сотрудник не видит чужие точки.</p>
+      </div>
+    </section>
+
+    <!-- 6 -->
+    <section class="slide dark">
+      <p class="eyebrow">Архитектура</p>
+      <h2>Как устроен проект</h2>
+      <div class="body">
+        <div class="flow">
+          <div class="flow-node"><strong>Vue 3 SPA</strong><span>Vite · Tailwind</span></div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-node"><strong>REST API</strong><span>Yii2 · PHP 8</span></div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-node"><strong>MySQL</strong><span>данные сети</span></div>
+        </div>
+        <div class="flow">
+          <div class="flow-node"><strong>Telegram-бот</strong><span>Python · aiogram</span></div>
+          <span class="flow-arrow">+</span>
+          <div class="flow-node"><strong>Web Push</strong><span>уведомления</span></div>
+          <span class="flow-arrow">+</span>
+          <div class="flow-node"><strong>Nginx</strong><span>HTTPS · /api</span></div>
+        </div>
+        <ul class="talk" style="margin-top:8px;">
+          <li>Фронт и бэк — <em>отдельные слои</em>, общаются через JSON и Bearer-токен</li>
+          <li>Монорепозиторий: frontend, web, config, telegram-bot</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 7 -->
+    <section class="slide">
+      <p class="eyebrow">Стек</p>
+      <h2>Технологии</h2>
+      <div class="body">
+        <div class="cols">
+          <div>
+            <p class="col-title">Frontend</p>
+            <div class="pills">
+              <span class="pill">Vue 3</span><span class="pill">Vite</span><span class="pill">Vue Router</span>
+              <span class="pill">Tailwind CSS</span><span class="pill">Axios</span><span class="pill">TipTap</span>
+            </div>
+            <p class="lead" style="margin-top:14px;font-size:14px;">Компонентный SPA, ~45 маршрутов, адаптивный сайдбар, тёмная тема.</p>
+          </div>
+          <div>
+            <p class="col-title">Backend &amp; инфра</p>
+            <div class="pills">
+              <span class="pill">Yii2</span><span class="pill">PHP 8</span><span class="pill">MySQL</span>
+              <span class="pill">Nginx</span><span class="pill">Codeception</span><span class="pill">Git</span>
+            </div>
+            <p class="lead" style="margin-top:14px;font-size:14px;">REST-контроллеры, миграции, cron-бэкап БД каждые 12 часов.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8 -->
+    <section class="slide">
+      <p class="eyebrow">Модули · часть 1</p>
+      <h2>Операционный блок</h2>
+      <div class="body">
+        <div class="grid-2">
+          <div class="box">
+            <span class="ico">📅</span>
+            <h3>График смен</h3>
+            <p>Неделя и месяц по точке. Праздники РФ. Приглашения на смены и усиление. Желаемые смены подтягиваются из карты возможностей.</p>
+          </div>
+          <div class="box">
+            <span class="ico">🗓</span>
+            <h3>Карта возможностей</h3>
+            <p>Сотрудник отмечает, когда может работать. Управляющий видит карты всех точек территории — удобно планировать график.</p>
+          </div>
+          <div class="box">
+            <span class="ico">📋</span>
+            <h3>Дейли</h3>
+            <p>Ежедневная отчётность по точке. Показатели смены. Экспорт. Автогенерация документов на месяц через раздел «Документация».</p>
+          </div>
+          <div class="box">
+            <span class="ico">💰</span>
+            <h3>Зарплата и КРО</h3>
+            <p>Личные расчёты по сменам. Настройка ключевых результатов (проход) по локации и периоду — для manager и admin.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9 -->
+    <section class="slide">
+      <p class="eyebrow">Модули · часть 2</p>
+      <h2>Поставки, связь, ТО</h2>
+      <div class="body">
+        <div class="grid-3">
+          <div class="box">
+            <span class="ico">📦</span>
+            <h3>Заказ поставок</h3>
+            <p>Каталог, формирование заказа по точке, экспорт в Excel. Для старших смен и менеджеров.</p>
+          </div>
+          <div class="box">
+            <span class="ico">💬</span>
+            <h3>Чат с бухгалтерией</h3>
+            <p>Переписка по конкретной точке. Вложения. Работает даже при слабом интернете.</p>
+          </div>
+          <div class="box">
+            <span class="ico">📸</span>
+            <h3>Техобслуживание</h3>
+            <p>Фотоотчёты по смене: загрузка, превью, удаление. Заявки на ремонт — в планах.</p>
+          </div>
+        </div>
+        <div class="grid-2" style="margin-top:14px;">
+          <div class="box">
+            <span class="ico">📰</span>
+            <h3>Новости + Web Push</h3>
+            <p>Лента для всей сети. Админ шлёт push. Сотрудник включает напоминания о сменах в настройках.</p>
+          </div>
+          <div class="box">
+            <span class="ico">👤</span>
+            <h3>Профиль и настройки</h3>
+            <p>Аватар, визитная карточка, смена пароля, тёмная тема, компактные таблицы, ссылка на Telegram-бот.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10 -->
+    <section class="slide dark">
+      <p class="eyebrow">DBT.INFO</p>
+      <h2>Обучение внутри портала</h2>
+      <div class="body">
+        <p class="lead">Полноценная LMS — не отдельный сайт, а раздел «Гуру» прямо в кабинете.</p>
+        <div class="grid-4">
+          <div class="box"><h3>Тесты</h3><p>Прохождение, лидерборд, история результатов</p></div>
+          <div class="box"><h3>Уроки</h3><p>Rich-text редактор TipTap, безопасный HTML</p></div>
+          <div class="box"><h3>Карточки</h3><p>База знаний для быстрого доступа</p></div>
+          <div class="box"><h3>Прогресс</h3><p>Дашборд для admin и manager</p></div>
+        </div>
+        <ul class="talk" style="margin-top:12px;">
+          <li>Новичок заходит — проходит тест — попадает в лидерборд</li>
+          <li>Admin создаёт урок и карточку прямо в интерфейсе</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 11 -->
+    <section class="slide">
+      <p class="eyebrow">Управление</p>
+      <h2>Админ-панель</h2>
+      <div class="body">
+        <div class="grid-3">
+          <div class="box"><h3>Дашборд</h3><p>Статистика, ручной и автоматический бэкап БД</p></div>
+          <div class="box"><h3>Пользователи</h3><p>CRUD, пароли, активация, привязка к точкам</p></div>
+          <div class="box"><h3>Локации</h3><p>Точки сети, привязка управляющих</p></div>
+          <div class="box"><h3>Новости</h3><p>Публикация материалов для ленты</p></div>
+          <div class="box"><h3>Web Push</h3><p>Массовые уведомления сотрудникам</p></div>
+          <div class="box"><h3>Аналитика</h3><p>Отчёты для admin и manager</p></div>
+        </div>
+        <p class="hook" style="font-size:17px;margin-top:16px;">Manager видит <span>только свою территорию</span> — admin управляет всей системой.</p>
+      </div>
+    </section>
+
+    <!-- 12 -->
+    <section class="slide">
+      <p class="eyebrow">Интеграции</p>
+      <h2>Telegram-бот обратной связи</h2>
+      <div class="body">
+        <div class="cols">
+          <div>
+            <ul class="talk">
+              <li><em>/bug</em> — сообщить об ошибке</li>
+              <li><em>/idea</em> — предложить улучшение</li>
+              <li>Текст, скрины и файлы летят в админский чат</li>
+              <li>Отдельный сервис на Python, не нагружает основной API</li>
+            </ul>
+          </div>
+          <div>
+            <p class="col-title">Безопасность</p>
+            <ul class="point">
+              <li>Bearer-токен на каждый запрос</li>
+              <li>Проверка роли и локации на бэкенде</li>
+              <li>DOMPurify — защита от XSS в контенте</li>
+              <li>HTTPS, CORS, бэкап БД 14 дней</li>
+              <li>Codeception — unit и functional тесты</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 13 -->
+    <section class="slide dark">
+      <p class="eyebrow">Продакшен</p>
+      <h2>От кода до dbthub.ru</h2>
+      <div class="body">
+        <div class="journey">
+          <div class="step"><div class="step-dot">1</div><h4>Разработка</h4><p>Vue + Vite локально, API на :8080</p></div>
+          <div class="step"><div class="step-dot">2</div><h4>Сборка</h4><p>npm run build → dist/</p></div>
+          <div class="step"><div class="step-dot">3</div><h4>Nginx</h4><p>Статика + прокси /api</p></div>
+          <div class="step"><div class="step-dot">4</div><h4>SSL</h4><p>Let's Encrypt</p></div>
+          <div class="step"><div class="step-dot">5</div><h4>Live</h4><p>dbthub.ru</p></div>
+        </div>
+        <ul class="talk" style="margin-top:16px;">
+          <li>Git, итерационные релизы, тестовый стенд перед выкладкой</li>
+          <li>Кросс-браузер: Chrome, Firefox, Safari mobile</li>
+          <li>Документация: README, ADMIN_PANEL, TROUBLESHOOTING</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 14 -->
+    <section class="slide">
+      <p class="eyebrow">Итог</p>
+      <h2>Что получилось</h2>
+      <div class="body">
+        <div class="stats">
+          <div class="stat"><div class="big-num">✓</div><div class="stat-label">Единый кабинет<br>для всей сети</div></div>
+          <div class="stat"><div class="big-num">✓</div><div class="stat-label">Роли + точки<br>из коробки</div></div>
+          <div class="stat"><div class="big-num">✓</div><div class="stat-label">Уже<br>эксплуатируется</div></div>
+        </div>
+        <ul class="talk">
+          <li>Сотрудник экономит время — не ищет, где что лежит</li>
+          <li>Управляющий видит территорию целиком — график, отчёты, люди</li>
+          <li>Обучение и коммуникации встроены — не нужны сторонние сервисы</li>
+          <li>Архитектура масштабируется: новый модуль — новый раздел в SPA</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 15 -->
+    <section class="slide hero">
+      <div class="glow"></div>
+      <p class="eyebrow">Спасибо</p>
+      <h1>DBT Hub</h1>
+      <p class="lead" style="margin-top:20px;">Один портал. Вся сеть. Готово к работе.</p>
+      <p class="hook" style="margin-top:28px;">dbthub.ru</p>
+      <p class="foot" style="color:#555;margin-top:40px;">Вопросы?</p>
+    </section>
+
+  </div>
+
+  <nav class="nav">
+    <button id="prev" aria-label="Назад">←</button>
+    <div class="dots" id="dots"></div>
+    <span class="cnt" id="cnt">1 / 15</span>
+    <button id="next" aria-label="Вперёд">→</button>
+  </nav>
+
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    const n = slides.length;
+    let cur = 0;
+    const dotsEl = document.getElementById('dots');
+    const cntEl = document.getElementById('cnt');
+
+    slides.forEach((_, i) => {
+      const d = document.createElement('span');
+      d.className = 'dot' + (i ? '' : ' active');
+      d.onclick = () => go(i);
+      dotsEl.appendChild(d);
+    });
+    const dots = dotsEl.querySelectorAll('.dot');
+
+    function go(i) {
+      slides[cur].classList.remove('active');
+      dots[cur].classList.remove('active');
+      cur = (i + n) % n;
+      slides[cur].classList.add('active');
+      dots[cur].classList.add('active');
+      cntEl.textContent = (cur + 1) + ' / ' + n;
+    }
+
+    document.getElementById('prev').onclick = () => go(cur - 1);
+    document.getElementById('next').onclick = () => go(cur + 1);
+    document.onkeydown = e => {
+      if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); go(cur + 1); }
+      if (e.key === 'ArrowLeft') go(cur - 1);
+    };
+  </script>
+</body>
+</html>

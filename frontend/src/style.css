@@ -1,0 +1,119 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Монохромный сайдбар: тёмный slate с лёгким синим подтоном */
+.bg-gradient-solar-coral {
+  background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+}
+
+body {
+  @apply antialiased text-gray-800 bg-gray-50;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* ─── Sidebar navigation ─── */
+.sidebar-link {
+  @apply flex items-center gap-3 px-5 py-2.5 mx-2 rounded-lg text-sm font-medium
+         text-slate-400 transition-all duration-150
+         hover:bg-white/[0.06] hover:text-white;
+}
+.sidebar-link-active {
+  @apply bg-white/[0.08] text-white;
+  box-shadow: inset 3px 0 0 theme('colors.primary.DEFAULT');
+}
+.sidebar-icon {
+  @apply text-base leading-none shrink-0;
+}
+
+/* Карточки профиля (геймификация): сайдбар и график */
+.user-card_default {
+  /* без доп. стиля */
+}
+
+/* Золотая тестовая карточка */
+.profile-card-test-gold,
+.profile-card-gold {
+  @apply rounded-lg;
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.25) 0%, rgba(184, 134, 11, 0.2) 100%);
+  box-shadow: 0 0 0 2px rgba(218, 165, 32, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Стиль ячейки имени в графике смен */
+.schedule-user-card_default {
+  /* без доп. стиля */
+}
+.schedule-user-card_test-gold,
+.schedule-user-card_gold {
+  @apply rounded-lg pl-2 pr-2 py-1;
+  background: linear-gradient(135deg, rgba(251, 236, 179, 0.9) 0%, rgba(245, 222, 179, 0.95) 100%);
+  box-shadow: 0 0 0 1px rgba(218, 165, 32, 0.4);
+}
+
+/* ─── Profile card effects (CSS-only, GPU-accelerated) ─── */
+.card-effect-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+.card-effect-shimmer::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%; width: 60%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+  animation: card-shimmer 2.5s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes card-shimmer {
+  0% { left: -100%; }
+  100% { left: 200%; }
+}
+
+.card-effect-glow {
+  animation: card-glow 2s ease-in-out infinite alternate;
+}
+@keyframes card-glow {
+  from { filter: brightness(1); }
+  to { filter: brightness(1.15); }
+}
+
+.card-effect-pulse {
+  animation: card-pulse 2s ease-in-out infinite;
+}
+@keyframes card-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.015); }
+}
+
+.card-effect-shine {
+  position: relative;
+  overflow: hidden;
+}
+.card-effect-shine::after {
+  content: '';
+  position: absolute;
+  top: -50%; left: -50%; width: 200%; height: 200%;
+  background: conic-gradient(from 0deg, transparent, rgba(255,255,255,0.08), transparent 30%);
+  animation: card-shine 4s linear infinite;
+  pointer-events: none;
+}
+@keyframes card-shine {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Колонка дня — официальный праздник РФ */
+.schedule-cell-holiday {
+  position: relative;
+  background: rgba(254, 202, 202, 0.42);
+}
+.schedule-cell-holiday.schedule-date-cell {
+  background: linear-gradient(to bottom, rgba(254, 226, 226, 0.6) 0%, rgba(248, 113, 113, 0.45) 100%);
+  color: #b91c1c;
+  font-weight: 600;
+}
+.schedule-cell-holiday:not(.schedule-date-cell) {
+  background: rgba(254, 202, 202, 0.38);
+}
+th.schedule-cell-holiday.cursor-pointer:hover {
+  background: linear-gradient(to bottom, rgba(254, 226, 226, 0.65) 0%, rgba(248, 113, 113, 0.5) 100%) !important;
+}

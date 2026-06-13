@@ -1,0 +1,474 @@
+main > .container {
+    padding: 70px 15px 20px;
+}
+
+/* Палитра в деловом стиле (по предоставленному макету) */
+:root {
+    --color-bg: #FDFBF8;            /* основной фон страниц (off-white/бежевый) */
+    --color-surface: #ffffff;       /* карточки, панели */
+    --color-primary: #F07E9B;       /* основной акцентный розовый (шапка, заголовки, кнопки) */
+    --color-primary-dark: #C6728B;  /* вторичный розовый/маув (навигация, hover) */
+    --color-accent: #A6667B;        /* тёмный розовый (границы, дороги на карте) */
+    --color-text: #333333;          /* основной текст */
+    --color-text-muted: #6c757d;    /* вторичный текст */
+    --color-border: #E8D3D6;        /* границы и разделители (приглушённый розовый) */
+    --color-nav-bg: #F07E9B;        /* фон навигации/шапки */
+    --color-footer-bg: #E8D3D6;     /* фон подвала */
+}
+
+/* Переопределение Bootstrap под нашу палитру */
+:root {
+    --bs-primary: var(--color-primary);
+    --bs-primary-rgb: 240, 126, 155;
+    --bs-secondary: var(--color-primary-dark);
+    --bs-secondary-rgb: 198, 114, 139;
+    --bs-body-bg: var(--color-bg);
+    --bs-body-color: var(--color-text);
+    --bs-light: var(--color-border);
+    --bs-border-color: var(--color-border);
+}
+
+.footer {
+    background-color: var(--color-footer-bg);
+    color: var(--color-text-muted);
+    font-size: .9em;
+    height: 60px;
+}
+
+.footer > .container {
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.not-set {
+    color: var(--color-primary-dark);
+    font-style: italic;
+}
+
+/* add sorting icons to gridview sort links */
+a.asc:after, a.desc:after {
+    content: '';
+    left: 3px;
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border: solid 5px transparent;
+    margin: 4px 4px 2px 4px;
+    background: transparent;
+}
+
+a.asc:after {
+    border-bottom: solid 7px var(--color-primary);
+    border-top-width: 0;
+}
+
+a.desc:after {
+    border-top: solid 7px var(--color-primary);
+    border-bottom-width: 0;
+}
+
+.grid-view th {
+    white-space: nowrap;
+}
+
+.hint-block {
+    display: block;
+    margin-top: 5px;
+    color: var(--color-text-muted);
+}
+
+.error-summary {
+    color: var(--color-primary-dark);
+    background: #FDFBF8;
+    border-left: 3px solid var(--color-border);
+    padding: 10px 20px;
+    margin: 0 0 15px 0;
+}
+
+/* align the logout "link" (button in form) of the navbar */
+.nav li > form > button.logout {
+    padding-top: 7px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+@media(max-width:767px) {
+    .nav li > form > button.logout {
+        display:block;
+        text-align: left;
+        width: 100%;
+        padding: 10px 0;
+    }
+}
+
+.nav > li > form > button.logout:focus,
+.nav > li > form > button.logout:hover {
+    text-decoration: none;
+    color: #ffffff;
+}
+
+.nav > li > form > button.logout:focus {
+    outline: none;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+/* Общая светлая палитра в стиле dbt */
+body {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+}
+
+.card {
+    background-color: var(--color-surface);
+    border-color: var(--color-border);
+    box-shadow: 0 4px 12px rgba(240, 126, 155, 0.08);
+}
+
+/* Таблицы: чёткий контраст, читаемый текст, видимые границы */
+.table {
+    --bs-table-border-color: #D4B8BE;
+    --bs-table-striped-bg: #F0E4E8;
+    --bs-table-hover-bg: #E8D3D6;
+}
+.table-dark {
+    --bs-table-bg: var(--color-surface);
+    --bs-table-striped-bg: #F0E4E8;
+    --bs-table-hover-bg: #E8D3D6;
+    color: var(--color-text);
+}
+.table th,
+.table td {
+    color: var(--color-text);
+    border-color: #D4B8BE;
+    padding: 0.6rem 0.75rem;
+}
+.table thead th {
+    position: sticky;
+    top: 0;
+    background-color: var(--color-primary);
+    color: #ffffff;
+    border-color: var(--color-primary-dark);
+    font-weight: 600;
+    z-index: 1;
+}
+.table tbody th {
+    background-color: #EDE0E3;
+    color: var(--color-text);
+    border-color: #D4B8BE;
+    font-weight: 600;
+}
+.table-striped > tbody > tr:nth-of-type(odd) > * {
+    --bs-table-accent-bg: var(--color-surface);
+    background-color: var(--color-surface);
+    color: var(--color-text);
+}
+.table-striped > tbody > tr:nth-of-type(even) > * {
+    --bs-table-accent-bg: #F0E4E8;
+    background-color: #F0E4E8;
+    color: var(--color-text);
+}
+.table-hover > tbody > tr:hover > * {
+    --bs-table-accent-bg: #E8D3D6;
+    background-color: #E8D3D6 !important;
+    color: var(--color-text);
+}
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+.nav-link {
+    color: var(--color-text);
+}
+
+.nav-link:hover,
+.nav-link:focus {
+    color: var(--color-primary-dark);
+}
+
+.btn-primary {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+}
+
+.btn-primary:hover {
+    background-color: var(--color-primary-dark);
+    border-color: var(--color-primary-dark);
+}
+
+/* Шапка для гостей — основной розовый */
+.navbar.bg-dark {
+    background-color: var(--color-nav-bg) !important;
+}
+
+/* Подвал — фон из палитры */
+#footer.bg-light {
+    background-color: var(--color-footer-bg) !important;
+}
+
+/* Mobile responsive styles */
+@media (max-width: 767px) {
+    /* Tables */
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .table {
+        font-size: 14px;
+    }
+    
+    .table th,
+    .table td {
+        padding: 8px 4px;
+        white-space: nowrap;
+    }
+    
+    /* Cards */
+    .card {
+        margin-bottom: 15px;
+    }
+    
+    .card-body {
+        padding: 15px;
+    }
+    
+    /* Buttons */
+    .btn {
+        padding: 10px 15px;
+        font-size: 14px;
+        margin-bottom: 5px;
+    }
+    
+    .btn-sm {
+        padding: 5px 10px;
+        font-size: 12px;
+    }
+    
+    /* Forms */
+    .form-control {
+        font-size: 16px; /* Prevents zoom on iOS */
+        padding: 10px;
+    }
+    
+    .form-label {
+        font-size: 14px;
+        margin-bottom: 5px;
+    }
+    
+    /* Headers */
+    h1 {
+        font-size: 24px;
+    }
+    
+    h2 {
+        font-size: 20px;
+    }
+    
+    h3 {
+        font-size: 18px;
+    }
+    
+    /* Alerts */
+    .alert {
+        padding: 10px 15px;
+        font-size: 14px;
+        margin-bottom: 15px;
+    }
+    
+    /* Breadcrumbs */
+    .breadcrumb {
+        font-size: 12px;
+        padding: 8px 0;
+    }
+    
+    /* Admin pages */
+    .admin-users .d-flex,
+    .admin-locations .d-flex {
+        flex-direction: column;
+        align-items: flex-start !important;
+    }
+    
+    .admin-users .d-flex h1,
+    .admin-locations .d-flex h1 {
+        margin-bottom: 15px;
+    }
+    
+    .admin-users .btn,
+    .admin-locations .btn {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    
+    /* Profile page */
+    .site-profile .row {
+        margin: 0;
+    }
+    
+    .site-profile .col-md-4,
+    .site-profile .col-md-8 {
+        padding: 0;
+        margin-bottom: 20px;
+    }
+    
+    /* Login page */
+    .site-login .col-lg-5 {
+        padding: 0;
+    }
+    
+    /* Action buttons in tables */
+    .table td .btn {
+        display: block;
+        width: 100%;
+        margin-bottom: 5px;
+    }
+    
+    .table td .btn:last-child {
+        margin-bottom: 0;
+    }
+}
+
+/* Tablet styles */
+@media (min-width: 768px) and (max-width: 991px) {
+    .main-content {
+        padding: 15px;
+    }
+    
+    .table {
+        font-size: 14px;
+    }
+    
+    .table th,
+    .table td {
+        padding: 10px 8px;
+    }
+}
+
+/* Touch-friendly improvements */
+@media (hover: none) and (pointer: coarse) {
+    .btn,
+    .nav-link,
+    a {
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .form-control,
+    .form-select {
+        min-height: 44px;
+    }
+}
+
+/* ===== ТЁМНАЯ ТЕМА ===== */
+body.theme-dark {
+    --color-bg: #1a1a1a;
+    --color-surface: #252525;
+    --color-text: #e8e8e8;
+    --color-text-muted: #a0a0a0;
+    --color-border: #3a3a3a;
+    --color-footer-bg: #252525;
+    background-color: var(--color-bg) !important;
+    color: var(--color-text) !important;
+}
+body.theme-dark .card {
+    background-color: var(--color-surface);
+    border-color: var(--color-border);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+body.theme-dark .table,
+body.theme-dark .table th,
+body.theme-dark .table td {
+    --bs-table-border-color: #404040;
+    --bs-table-striped-bg: #2d2d2d;
+    --bs-table-hover-bg: #353535;
+    color: var(--color-text);
+    border-color: #404040;
+}
+body.theme-dark .table thead th {
+    background-color: var(--color-primary);
+    color: #fff;
+    border-color: var(--color-primary-dark);
+}
+body.theme-dark .table tbody th {
+    background-color: #2d2d2d;
+}
+body.theme-dark .form-control,
+body.theme-dark .form-select {
+    background-color: #2d2d2d;
+    border-color: var(--color-border);
+    color: var(--color-text);
+}
+body.theme-dark .form-control:focus,
+body.theme-dark .form-select:focus {
+    background-color: #333;
+    border-color: var(--color-primary);
+    color: var(--color-text);
+}
+body.theme-dark .breadcrumb,
+body.theme-dark .breadcrumb-item a {
+    color: var(--color-text-muted);
+}
+body.theme-dark .text-muted {
+    color: var(--color-text-muted) !important;
+}
+body.theme-dark .settings-card .card-header {
+    background-color: #2a2a2a;
+    border-color: var(--color-border);
+    color: var(--color-text);
+}
+
+/* Компактный вид таблиц */
+body.compact-tables .table th,
+body.compact-tables .table td {
+    padding: 0.35rem 0.5rem;
+    font-size: 0.9rem;
+}
+body.compact-tables .schedule-table th,
+body.compact-tables .schedule-table td,
+body.compact-tables .availability-table th,
+body.compact-tables .availability-table td {
+    padding: 4px 6px;
+    font-size: 0.85rem;
+}
+
+/* ===== Карточки профиля сотрудников ===== */
+.profile-card {
+    background-color: var(--color-surface);
+    border-radius: 12px;
+    padding: 12px 16px;
+    margin-top: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border: 1px solid var(--color-border);
+}
+
+.profile-card-header {
+    font-weight: 600;
+    margin-bottom: 6px;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.profile-card-name {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.profile-card-status {
+    font-size: 13px;
+    color: var(--color-text-muted);
+}
+
+.profile-card-test-gold {
+    background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+    color: #fff;
+    border: none;
+}
+
+.profile-card-test-gold .profile-card-status {
+    color: rgba(255, 255, 255, 0.9);
+}
